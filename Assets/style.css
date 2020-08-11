@@ -9,7 +9,14 @@ p{
 .float-right{
     text-align: right;
 }
-.main-content>*{
+#main-content>*{
     margin: 3rem;
     text-align: center;
 }
+/* does this do anything? */
+.answerChoiceButton{
+    margin: 5px;
+}
+/* .questionBlock{
+    text-align: left;
+} */

@@ -1,0 +1,15 @@
+#start-quiz-btn,
+h1,
+p{
+    margin: 0 auto;
+}
+.top-bar{
+    margin: 0 auto;
+}
+.float-right{
+    text-align: right;
+}
+.main-content>*{
+    margin: 3rem;
+    text-align: center;
+}

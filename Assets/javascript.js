@@ -9,8 +9,7 @@ var questionOneArray = [
   "1. strings",
   "2. booleans",
   "3. alerts",
-  "4. numbers",
-];
+  "4. numbers",];
 var questionTwoArray = ["Arrays in JavaScript can be used to store _____.",
 "1. numbers and strings",
 "2. other arrays",
@@ -32,6 +31,11 @@ var questionFiveArray = ["A very useful tool used during development and debuigg
 "2. terminal / bash",
 "3. fore loops",
 "4. console.log"];
+
+// var timeRemaining;
+var timeRemaining = 0;
+
+
 
 $("#start-quiz-btn").on("click", function () {
   //start the quiz
@@ -66,9 +70,36 @@ function postNewQuestion(questionArray) {
     // $("#main-content").attr("text-align" ,"center");
     // $("#questionTopRow").style["text-align"] = "right";
   }
-
-
 }
 
-postNewQuestion(questionOneArray);
+function gameOver(){
+  
+  //are these actually necessary?
+  $("#questionTopRow").empty();
+  $("#questionMiddleRow").empty();
+  $("#questionBottomRow").empty();
+  
+  
+  $("#questionTopRow").html("<h1>All done!</h1>");
+  $("#questionMiddleRow").append($("<p> Your final score is: " + timeRemaining + ".</p>"));
+  $("#questionMiddleRow").append($("<div class='col-md-4'> Enter Initials: </div>"));
+  //gotta somehow put that entry form in there and grab it for local storage 
+  // $("#questionMiddleRow").append($("<div class='col-md-4'>  </div>"));
+
+
+
+  $("#questionMiddleRow").append($("<input  type='text' placeholder='Your initials' name='todo-text' id='todo-text' />"));
+  $("#questionMiddleRow").append($("<button   type='button' class='row btn btn-primary float-right' id='submit-score-btn'>Submit</button>"));
+  
+  
+}
+
+
+//use something like  init() function in activity 28 in web apis to pull old high scores onto page
+
+
+
+
+// postNewQuestion(questionOneArray);
+gameOver()
 

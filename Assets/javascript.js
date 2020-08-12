@@ -9,10 +9,10 @@ $(document).ready(function(){
 //if i was super duper fancy the answer options would just be the words and the function adds the 1., 2. etc
 var questionOneArray = [
   "Commonly used data types DO NOT include: ",
-  "1. strings",
-  "2. booleans",
-  "3. alerts",
-  "4. numbers",];
+  "strings",
+  "booleans",
+  "alerts",
+  "numbers",];
 var questionTwoArray = ["Arrays in JavaScript can be used to store _____.",
 "1. numbers and strings",
 "2. other arrays",
@@ -35,16 +35,21 @@ var questionFiveArray = ["A very useful tool used during development and debuigg
 "3. fore loops",
 "4. console.log"];
 
-// var timeRemaining;
+//time remaining and score
 var timeRemaining = 75;
 
+//HTML span that contains the on-screen timeRemaining text
 var timerSpan = $("#time-remaining");
 timerSpan.text(timeRemaining);
+
+// 
+localStorage.setItem('timeRemaining', timeRemaining)
 
 $("#start-quiz-btn").on("click", function () {
   //start the quiz
   
 });
+
 
 //should I add an index passed as an argument for this function
 // that tells it which one is the correct answer? 
@@ -76,19 +81,22 @@ function postNewQuestion(questionArray, previousQuestionCorrect) {
     $("#questionMiddleRow").empty();
     $("#questionBottomRow").empty();
     
+    
+    // $("#questionMiddleRow").append("<div>");
+
     //I also need to change the class attribute so it 
     // stops center-justifying everything
     // $("#questionTopRow").attr("class", "questionBlock")
 
-  $("#questionTopRow").text(questionArray[0]);
+  $("#questionTopRow").html('<h1>' + questionArray[0] + '</h1>');
   for (var i = 1; i < questionArray.length; i++) {
     var answerOptionBtn = $(
-      "<button type='button' class='row btn btn-primary answerChoiceButton float-left' id='start-quiz-btn'>Start Quiz</button>"
+      " <button type='button' class='row btn btn-primary answerChoiceButton float-left' id='start-quiz-btn'>Start Quiz</button>  "
     );
     //WHY ON EARTH DID THIS NOT WORK UNTIL I ADDED THE BREAKS
     $("#questionMiddleRow").append("<br><br>");
     $("#questionMiddleRow").append(answerOptionBtn);
-    answerOptionBtn.text(questionArray[i]);
+    answerOptionBtn.text(i+'. ' + questionArray[i]);
 
     //i dont think this is how you modify styling through js
     // $("#main-content").attr("text-align" ,"center");
@@ -132,7 +140,7 @@ $("#clear-highscores-btn").click( function (){$('#high-score-box').empty()});
 
 
 
-// postNewQuestion(questionOneArray);
+postNewQuestion(questionOneArray);
 // gameOver()
 
 });

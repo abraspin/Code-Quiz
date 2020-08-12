@@ -1,3 +1,6 @@
+//is it inapropritate to wrap the ENTIRE JS  file in a document.ready function?
+$(document).ready(function(){
+
 //i can use the 3 rows i already made for the "main-content" and replace with the question h1, answer button options, and "correct!"/"wrong!"
 
 // one array with the questions, and then a corresponding array of answers? is there a better premade data objectfor this?
@@ -33,9 +36,10 @@ var questionFiveArray = ["A very useful tool used during development and debuigg
 "4. console.log"];
 
 // var timeRemaining;
-var timeRemaining = 0;
+var timeRemaining = 75;
 
-
+var timerSpan = $("#time-remaining");
+timerSpan.text(timeRemaining);
 
 $("#start-quiz-btn").on("click", function () {
   //start the quiz
@@ -44,7 +48,27 @@ $("#start-quiz-btn").on("click", function () {
 
 //should I add an index passed as an argument for this function
 // that tells it which one is the correct answer? 
-function postNewQuestion(questionArray) {
+
+function postNewQuestion(questionArray, previousQuestionCorrect) {
+
+  //Begin the timer each time a new question is posed, it will be passed the previous 
+  // timeRemaining value and --maybe an argument for whether or not the person answered correctly?
+
+  var timeInterval = setInterval(function() {
+    // timerEl.textContent = timeLeft + " seconds remaining";
+    timerSpan.text (timeRemaining);
+    timeRemaining--;
+
+    if (timeRemaining <= 0) {
+      timerSpan.text(timeRemaining);
+      clearInterval(timeInterval);
+
+     gameOver();
+    }
+
+  }, 1000);
+
+
     //first we empty the 3 rows of contents to prepare to fill them
     //with the question and answer choices
 
@@ -100,6 +124,7 @@ function gameOver(){
 
 
 
-// postNewQuestion(questionOneArray);
-gameOver()
+postNewQuestion(questionOneArray);
+// gameOver()
 
+});

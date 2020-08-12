@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Code Quiz</title>
     <!-- add link to font awesome library -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Added link to the jQuery library -->
@@ -24,19 +24,25 @@
                 <a id=view-high-scores href="./high-scores.html">View High Scores</a>
             </div>
             <div class="col-md-6 float-right">
-                Time Remaining: <span id=time-remaining ></span>
+                Time Remaining: <span id=time-remaining></span>
             </div>
         </div>
 
     </div>
 
     <div class="container" id="main-content">
-        <div class="row" >
-            <h1 id="questionTopRow">Coding Quiz Challenge</h1>
+        <div class="row">
+            <h1>Coding Quiz Challenge</h1>
         </div>
         <div class="row">
-            <p class="col-md-6" id="questionMiddleRow"> Try to answer the following code-related questions within the time limit. Keep in mind
-                that incorrect answers will penalize your score/time by ten seconds!</p>
+            <!-- spacer so the next element is centered -->
+            <div class="col-md-4"></div>
+            <div class="row col-md-4 ">
+                <p class="row" id="questionMiddleRow"> Try to answer the following code-related questions
+                    within the time limit. Keep in mind
+                    that incorrect answers will penalize your score/time by ten seconds!</p>
+            </div>
+
         </div>
     </div>
     <div class="row" id="questionBottomRow">

@@ -112,11 +112,19 @@ function gameOver(){
 
 
 
-  $("#questionMiddleRow").append($("<input  type='text' placeholder='Your initials' name='todo-text' id='todo-text' />"));
-  $("#questionMiddleRow").append($("<button   type='button' class='row btn btn-primary float-right' id='submit-score-btn'>Submit</button>"));
+  $("#questionMiddleRow").append($("<input  type='text' class = 'col-md-4' placeholder='Your initials' name='todo-text' id='todo-text' />"));
+  $("#questionMiddleRow").append($("<button   type='button' class='btn btn-primary col-md-4 float-right' id='submit-score-btn'>Submit</button>"));
   
   
 }
+
+//ON THE HIGH SCORES PAGE when the user clicks "clear high scores button"
+//it will empty the div containing the list of high scores. A new OL must therefore be made when repopulating.
+$("#clear-highscores-btn").click( function (){$('#high-score-box').empty()});
+//the above SHOULD do the below
+  // var clearButton = $("#clear-highscores-btn");
+  //   clearButton.click( function (){$('#high-score-box').empty();
+    
 
 
 //use something like  init() function in activity 28 in web apis to pull old high scores onto page
@@ -124,7 +132,7 @@ function gameOver(){
 
 
 
-postNewQuestion(questionOneArray);
+// postNewQuestion(questionOneArray);
 // gameOver()
 
 });

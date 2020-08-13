@@ -67,6 +67,7 @@ $(document).ready(function () {
     questionFourArray,
     questionFiveArray,
   ];
+  console.log("master questions array length: " + masterQuestionsArray.length)
   //time remaining and score
   var timeRemaining = 75;
   console.log(masterQuestionsArray);
@@ -91,6 +92,14 @@ $(document).ready(function () {
   // that tells it which one is the correct answer?
 
   function postNewQuestion(questionArray) {
+
+        
+if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.length){
+  console.log("I entered the game over if and the current question value in local storage is: " + parseInt(localStorage.getItem("currentQuestion")) )
+  gameOver();
+  return;
+}
+
     console.log("passed question array: " + questionArray);
     //Begin the timer each time a new question is posed, it will be passed the previous
     // timeRemaining value and --maybe an argument for whether or not the person answered correctly?
@@ -106,6 +115,9 @@ $(document).ready(function () {
         clearInterval(timeInterval);
 
         gameOver();
+        //NOT 100% SURE ON THIS RETURN CAUSE I ADDED IT TO THE IF STATEMENT AT THE START BUT THIS WORKED
+        // OK BEFORE I CHANGED IT?
+        return;
       }
     }, 1000);
 
@@ -156,25 +168,33 @@ $(document).ready(function () {
       // }
     }
 
-      // click events apparently need to go at the end...
+
+
+    // console.log("i in the loop but outside clicks: " +i);
   $(".correct-answer").on("click", function () {
+    // console.log("i in the click loop: " + i);
+    //can this go outside the click events? probably!
     var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
-    console.log(currentQuestion)
+    console.log(currentQuestion);
     currentQuestion++;
     console.log(currentQuestion);
     localStorage.setItem("currentQuestion", currentQuestion)
     localStorage.setItem("previousQuestionCorrect", true);
-    // postNewQuestion(masterQuestionsArray[i][0]);
+    postNewQuestion(masterQuestionsArray[currentQuestion]);
     console.log("correct answer selected");
   });
 
   $(".incorrect-answer").on("click", function () {
+    var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
+    console.log("i in the click loop: " + i);
+    currentQuestion++;
+    localStorage.setItem("currentQuestion", currentQuestion);
     localStorage.setItem("previousQuestionCorrect", false);
-    // postNewQuestion(masterQuestionsArray[i][0]);
+    postNewQuestion(masterQuestionsArray[currentQuestion]);
     console.log("incorrect answer selected");
   });
 
-
+  
   }
 
   function gameOver() {
@@ -223,7 +243,6 @@ $(document).ready(function () {
   // it skips 1, because it runs 1 when you start the
 
 
-  // for (var i = 1; i < 5; i++) {}
 
 
 

@@ -16,7 +16,7 @@ $(document).ready(function () {
     answerThree: "",
     answerFour: "",
   };
-  // The 0th element in each array is going to contain as its value, the index of that array that contains the correct answer.
+  // The 0th element in each array is going to contain as its value, the index of that array which contains the correct answer.
 
   var questionOneArray = [
     "4",
@@ -79,6 +79,10 @@ $(document).ready(function () {
   //
   localStorage.setItem("timeRemaining", timeRemaining);
 
+  var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
+
+  localStorage.setItem("currentQuestion", 0)
+
   // localStorage.setItem("previousQuestionCorrect");
 
   $("#start-quiz-btn").on("click", function () {
@@ -104,6 +108,8 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
     //Begin the timer each time a new question is posed, it will be passed the previous
     // timeRemaining value and --maybe an argument for whether or not the person answered correctly?
 
+
+    //why does the timer take so long to start after showing the first question?
     var timeInterval = setInterval(function () {
       timerDisplay.text(timeRemaining);
       //gotta update the local storage on each tick of the timer
@@ -169,12 +175,12 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
     }
 
 
-
+//this used to be inside each click event. now its up top
+    // var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
     // console.log("i in the loop but outside clicks: " +i);
   $(".correct-answer").on("click", function () {
     // console.log("i in the click loop: " + i);
-    //can this go outside the click events? probably!
-    var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
+    clearInterval(timeInterval);
     console.log(currentQuestion);
     currentQuestion++;
     console.log(currentQuestion);
@@ -185,7 +191,10 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
   });
 
   $(".incorrect-answer").on("click", function () {
-    var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
+    timeRemaining = localStorage.getItem("timeRemaining");
+    timeRemaining = timeRemaining - 10;
+    localStorage.setItem("timeRemaining", timeRemaining);
+    clearInterval(timeInterval);
     console.log("i in the click loop: " + i);
     currentQuestion++;
     localStorage.setItem("currentQuestion", currentQuestion);
@@ -239,8 +248,6 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
   // postNewQuestion(questionOneArray, 3);
   // gameOver()
 
-  // MAGIC NUMBER - iterates as many times as questions I have written.
-  // it skips 1, because it runs 1 when you start the
 
 
 

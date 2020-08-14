@@ -67,10 +67,10 @@ $(document).ready(function () {
     questionFourArray,
     questionFiveArray,
   ];
-  console.log("master questions array length: " + masterQuestionsArray.length)
+  // console.log("master questions array length: " + masterQuestionsArray.length);
   //time remaining and score
   var timeRemaining = 75;
-  console.log(masterQuestionsArray);
+  // console.log(masterQuestionsArray);
 
   //HTML span that contains the on-screen timeRemaining text
   var timerDisplay = $("#time-remaining");
@@ -79,35 +79,47 @@ $(document).ready(function () {
   //
   localStorage.setItem("timeRemaining", timeRemaining);
 
-  var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
+  var currentQuestion = parseInt(localStorage.getItem("currentQuestion"));
 
-  localStorage.setItem("currentQuestion", 0)
-
+  localStorage.setItem("currentQuestion", 0);
+  // console.log("I SET THE LOCAL STORAGE VALUE FOR CURRENT QUESITON TO 0!!");
   // localStorage.setItem("previousQuestionCorrect");
 
+  ///////////////////////////////////////////   functions //////////////////////////////////////////////////
   $("#start-quiz-btn").on("click", function () {
     //start the quiz
     postNewQuestion(questionOneArray);
     //setting current question to the index of the first question in the master questions array.
-    localStorage.setItem("currentQuestion", "0")
+    localStorage.setItem("currentQuestion", "0");
   });
 
   //should I add an index passed as an argument for this function
   // that tells it which one is the correct answer?
 
   function postNewQuestion(questionArray) {
-
-        
-if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.length){
-  console.log("I entered the game over if and the current question value in local storage is: " + parseInt(localStorage.getItem("currentQuestion")) )
-  gameOver();
-  return;
-}
+    if (
+      parseInt(localStorage.getItem("currentQuestion")) ===
+      masterQuestionsArray.length
+    ) {
+      console.log(
+        "I entered the game over if and the current question value in local storage is: " +
+          parseInt(localStorage.getItem("currentQuestion"))
+      );
+      gameOver();
+      return;
+    }
+    if (currentQuestion != 0) {
+      if (localStorage.getItem("previousQuestionCorrect")) {
+        $("#questionMiddleRow").html("correct");
+      } else {
+        // Wro;
+        // WHAT HIS GOING ON HERE
+      }
+    }
 
     console.log("passed question array: " + questionArray);
     //Begin the timer each time a new question is posed, it will be passed the previous
     // timeRemaining value and --maybe an argument for whether or not the person answered correctly?
-
 
     //why does the timer take so long to start after showing the first question?
     var timeInterval = setInterval(function () {
@@ -143,12 +155,12 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
     $("#questionTopRow").html("<h1>" + questionArray[1] + "</h1>");
     //starting this for loop at 2, because 0 contains the correct answer index, and 1 contains the question text.
     for (var i = 2; i < questionArray.length; i++) {
-      //if the index currently being made into a button matches the value in index 0 of the passed array(index 0 
+      //if the index currently being made into a button matches the value in index 0 of the passed array(index 0
       // contains the value of the index containing the correct answer text), then it
       // will mark this button with the class "correct-answer"
       console.log("i: " + i);
       console.log(questionArray[0]);
-      console.log("i to string: " + i.toString())
+      console.log("i to string: " + i.toString());
       var answerOptionBtn;
       if (i.toString() === questionArray[0]) {
         answerOptionBtn = $(
@@ -162,7 +174,7 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
         console.log("i printed a wrong answer button");
       }
       $("#questionMiddleRow").append(answerOptionBtn);
-      answerOptionBtn.text((i-1) + ". " + questionArray[i]);
+      answerOptionBtn.text(i - 1 + ". " + questionArray[i]);
 
       //i dont think this is how you modify styling through js
       // $("#main-content").attr("text-align" ,"center");
@@ -174,36 +186,33 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
       // }
     }
 
-
-//this used to be inside each click event. now its up top
+    //this used to be inside each click event. now its up top
     // var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
     // console.log("i in the loop but outside clicks: " +i);
-  $(".correct-answer").on("click", function () {
-    // console.log("i in the click loop: " + i);
-    clearInterval(timeInterval);
-    console.log(currentQuestion);
-    currentQuestion++;
-    console.log(currentQuestion);
-    localStorage.setItem("currentQuestion", currentQuestion)
-    localStorage.setItem("previousQuestionCorrect", true);
-    postNewQuestion(masterQuestionsArray[currentQuestion]);
-    console.log("correct answer selected");
-  });
+    $(".correct-answer").on("click", function () {
+      // console.log("i in the click loop: " + i);
+      clearInterval(timeInterval);
+      console.log(currentQuestion);
+      currentQuestion++;
+      console.log(currentQuestion);
+      localStorage.setItem("currentQuestion", currentQuestion);
+      localStorage.setItem("previousQuestionCorrect", true);
+      postNewQuestion(masterQuestionsArray[currentQuestion]);
+      console.log("correct answer selected");
+    });
 
-  $(".incorrect-answer").on("click", function () {
-    timeRemaining = localStorage.getItem("timeRemaining");
-    timeRemaining = timeRemaining - 10;
-    localStorage.setItem("timeRemaining", timeRemaining);
-    clearInterval(timeInterval);
-    console.log("i in the click loop: " + i);
-    currentQuestion++;
-    localStorage.setItem("currentQuestion", currentQuestion);
-    localStorage.setItem("previousQuestionCorrect", false);
-    postNewQuestion(masterQuestionsArray[currentQuestion]);
-    console.log("incorrect answer selected");
-  });
-
-  
+    $(".incorrect-answer").on("click", function () {
+      timeRemaining = localStorage.getItem("timeRemaining");
+      timeRemaining = timeRemaining - 10;
+      localStorage.setItem("timeRemaining", timeRemaining);
+      clearInterval(timeInterval);
+      console.log("i in the click loop: " + i);
+      currentQuestion++;
+      localStorage.setItem("currentQuestion", currentQuestion);
+      localStorage.setItem("previousQuestionCorrect", false);
+      postNewQuestion(masterQuestionsArray[currentQuestion]);
+      console.log("incorrect answer selected");
+    });
   }
 
   function gameOver() {
@@ -224,7 +233,7 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
 
     $("#questionMiddleRow").append(
       $(
-        "<input  type='text' class = 'col-md-4' placeholder='Your initials' name='todo-text' id='todo-text' />"
+        "<input  type='text' class = 'col-md-4' placeholder='Your initials' name='high-initials-text' id='initials-text' />"
       )
     );
     $("#questionMiddleRow").append(
@@ -246,11 +255,43 @@ if(parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.le
   //use something like  init() function in activity 28 in web apis to pull old high scores onto page
 
   // postNewQuestion(questionOneArray, 3);
-  // gameOver()
+  gameOver();
 
+  $(document).on("click", "#submit-score-btn", function (e) {
+    // var initialsText = $("#initials-text");
 
+    //prevents the page refreshing between button click and grabbing the form data
+    e.preventDefault();
 
+    var initialsText = $("#initials-text").val();
+    console.log("submit score button was pressed!");
 
+    console.log(initialsText);
+    console.log("initials text is: " + initialsText);
 
+    // var newInitials = initialsText.value;
+    // console.log( JSON.parse(initialsText))
+    // var newInitials = initialsText.value;
+    // console.log(newInitials);
+    // console.log("the initials form input text is: " + newInitials);
 
+    // // Return from function early if submitted todoText is blank
+    // if (newInitials === "") {
+    //   return;
+    // }
+
+    //  ///////////// // Add new todoText to todos array, clear the input
+    //   todos.push(todoText);
+    //   todoInput.value = "";
+
+    //  //////////////// // Store updated todos in localStorage, re-render the list
+    //   storeTodos();
+    //   renderTodos();
+    // });
+  });
+
+  function addHighScore() {
+    // var initials = $("#initials-text").submit()
+    // alert(initials);
+  }
 });

@@ -9,28 +9,12 @@ $(document).ready(function () {
   //local storage initializations - time remaining resets to the above value, current question resets to 0
   localStorage.setItem("timeRemaining", timeRemaining);
   localStorage.setItem("currentQuestion", 0);
-  //this contains the
 
   // console.log(masterQuestionsArray);
   //arrays containing the code questions, answer choices, and correct answer index.
   // The 0th element in each array is going to contain as its value, the index of that array which contains the correct answer.
 
-  // var questionObj = {
-  //   questionText: "",
-  //   answerOne: "",
-  //   answerTwo: "",
-  //   answerThree: "",
-  //   answerFour: "",
-  // };
-
-  var questionOneArray = [
-    "4",
-    "Commonly used data types DO NOT include: ",
-    "strings",
-    "booleans",
-    "alerts",
-    "numbers",
-  ];
+  var questionOneArray = ["4", "Commonly used data types DO NOT include: ", "strings", "booleans", "alerts", "numbers"];
   var questionTwoArray = [
     "5",
     "Arrays in JavaScript can be used to store _____.",
@@ -65,22 +49,12 @@ $(document).ready(function () {
     "4. console.log",
   ];
 
-  var masterQuestionsArray = [
-    questionOneArray,
-    questionTwoArray,
-    questionThreeArray,
-    questionFourArray,
-    questionFiveArray,
-  ];
-
-  timerDisplay.text(timeRemaining);
-  //
-
-  // console.log("I SET THE LOCAL STORAGE VALUE FOR CURRENT QUESITON TO 0!!");
-  // localStorage.setItem("previousQuestionCorrect");
+  var masterQuestionsArray = [questionOneArray, questionTwoArray, questionThreeArray, questionFourArray, questionFiveArray];
 
   ///////////////////////////////////////////   functions //////////////////////////////////////////////////
   $("#start-quiz-btn").on("click", function () {
+    // display time remaining on the page
+    timerDisplay.text(timeRemaining);
     //clear appropriate local storage, last game's high scorer and their score
     localStorage.setItem("newHighScore", "");
     localStorage.setItem("scoreThisround", timeRemaining);
@@ -92,20 +66,12 @@ $(document).ready(function () {
     postNewQuestion(questionOneArray);
   });
 
-  //should I add an index passed as an argument for this function
-  // that tells it which one is the correct answer?
-
   function postNewQuestion(questionArray) {
-    // var questionArrayCheck = questionArray;
-
-    if (
-      parseInt(localStorage.getItem("currentQuestion")) ===
-      masterQuestionsArray.length
-    ) {
-      console.log(
-        "I entered the game over if and the current question value in local storage is: " +
-          parseInt(localStorage.getItem("currentQuestion"))
-      );
+    if (parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.length) {
+      // console.log(
+      //   "I entered the game over if and the current question value in local storage is: " +
+      //     parseInt(localStorage.getItem("currentQuestion"))
+      // );
       gameOver();
       return;
     }
@@ -220,69 +186,65 @@ $(document).ready(function () {
     $("#questionBottomRow").empty();
 
     $("#questionTopRow").html("<h1>All done!</h1>");
-    $("#questionMiddleRow").append(
-      $("<p class = 'row'> Your final score is: " + timeRemaining + ".</p>")
-    );
-    $("#questionMiddleRow").append(
-      $("<div class='col-md-4'> Enter Initials: </div>")
-    );
-    //gotta somehow put that entry form in there and grab it for local storage
-    // $("#questionMiddleRow").append($("<div class='col-md-4'>  </div>"));
+    $("#questionMiddleRow").append($("<p class = 'row'> Your final score is: " + timeRemaining + ".</p>"));
+    $("#questionMiddleRow").append($("<div class='col-md-4'> Enter Initials: </div>"));
 
     $("#questionMiddleRow").append(
-      $(
-        "<input  type='text' class = 'col-md-4' placeholder='Your initials' name='high-initials-text' id='initials-text' />"
-      )
+      $("<input  type='text' class = 'col-md-4' placeholder='Your initials' name='high-initials-text' id='initials-text' />")
     );
     $("#questionMiddleRow").append(
-      $(
-        "<button   type='button' class='btn btn-primary col-md-4 ' id='submit-score-btn'>Submit</button>"
-      )
+      $("<button   type='button' class='btn btn-primary col-md-4 ' id='submit-score-btn'>Submit</button>")
     );
   }
 
+  //I definitely need a way to validate whether the local storage variable key exists  before 
+  // looking for it to populate this list, if it exists and is populated, right?
   function renderHighScoresPage() {
-    // test -
-
-    // localStorage.setItem("newHighScore", "A.S");
-
-    //end test///
-
-    // first we take the existing list from local storage and parse it into an array
-
     var scoresListEl = $("#high-score-box");
-    // if statement checking for if the high scores have been cleared? no its always empty dummy
-    scoresListEl.empty();
-    scoresListEl.append($("<ol id='scores-ordered-list'> </ol>"));
+    //test
+    localStorage.setItem("newHighScore", "abe");
+    localStorage.setItem("scoreThisRound", 60);
+
+    // highScoresArray = ["A.S -- 52", "A.b -- 67"];
+    console.log(localStorage.getItem("previousScoresListHTML"))
+    highScoresArray = JSON.parse(localStorage.getItem("previousScoresListHTML"));
+    console.log(highScoresArray)
+    scoresListEl.append($("<ol id='scores-ordered-list'></ol>"));
+
+    for (var i = 0; i < highScoresArray.length; i++) {
+      $("#scores-ordered-list").append($("<li>" + highScoresArray[i] + "</li>"));
+    }
+
+    //end test
+
+    // // this code is to try and figure out how to get either an existing list, or a new list, into an OL. b/c i can't
+    // // seem to grab just the content of the OL (just the li's)
+    // if (localStorage.getItem("previousScoresListHTML")) {
+    //   console.log("I didnt think it was empty");
+    //   scoresListEl.append(
+    //     $(
+    //       "<ol id='scores-ordered-list'>" +
+    //         localStorage.getItem("previousScoresListHTML") +
+    //         "</ol>"
+    //     )
+    //   );
+    // } else {
+    //   console.log("I thought it was empty");
+    //   console.log(scoresListEl.html());
+    //   scoresListEl.append(
+    //     $("<ol id='scores-ordered-list'>" + " test" + " </ol>")
+    //   );
+    // }
     // $("#scores-ordered-list").append($("<li>" + "item1" + "</li>"));
 
     //prepend this person's high score to the list
     $("#scores-ordered-list").prepend(
-      $(
-        "<li>" +
-          localStorage.getItem("newHighScore") +
-          " -- " +
-          localStorage.getItem("timeRemaining") +
-          "</li>"
-      )
+      $("<li>" + localStorage.getItem("newHighScore") + " -- " + localStorage.getItem("scoreThisRound") + "</li>")
     );
 
-    if (!localStorage.getItem("previousScoresListHTML")) {
-      scoresListEl.append(localStorage.getItem("previousScoresListHTML"));
-      console.log("i thought it was empty");
-    }
-
-    localStorage.setItem(
-      "previousScoresListHTML",
-      $("#high-score-box").innerText
-    );
-    // console.log($("#scoresListID").html());
-    var innerTextTest = $("#high-score-box");
-    var test2 = innerTextTest.innerText;
-    console.log(test2);
+    // localStorage.setItem("previousScoresListHTML", $("#high-score-box").html());
+    localStorage.setItem("previousScoresListHTML", JSON.stringify($("#high-score-box").text()));
   }
-
-  renderHighScoresPage();
 
   //ON THE HIGH SCORES PAGE when the user clicks "clear high scores button"
   //it will empty the div containing the list of high scores. A new OL must therefore be made when repopulating.
@@ -291,11 +253,7 @@ $(document).ready(function () {
     localStorage.setItem("previousScoresListHTML", "");
   });
 
-  // postNewQuestion(questionOneArray, 3);
-  // gameOver();
-
   //this event listener will grab the user's initials when they click the "submit button" after the game is over
-
   $(document).on("click", "#submit-score-btn", function (e) {
     //prevents the page refreshing between button click and grabbing the form data
     e.preventDefault();
@@ -312,21 +270,18 @@ $(document).ready(function () {
     if (newInitials === "") {
       alert("Please enter your initials for posterity!");
     } else {
+      //navigate to high scores page and render the content
       document.location = "./high-scores.html";
-      //function here to clear existing list and render new one
+      /////////////////////////////////////////
+      //////i think this is problematic////////
+      /////////////////////////////////////////
+      //wait for the page to load? I don't think so...
+      $(document).ready(function () {
+        //it ONLY renders the local storage into HTML for the high scores list if you got there via this click event
+        renderHighScoresPage();
+      });
     }
-    //  ///////////// // Add new todoText to todos array, clear the input
-    //   todos.push(todoText);
-    //   todoInput.value = "";
-
-    //  //////////////// // Store updated todos in localStorage, re-render the list
-    //   storeTodos();
-    //   renderTodos();
-    // });
   });
 
-  function addHighScore() {
-    // var initials = $("#initials-text").submit()
-    // alert(initials);
-  }
+  renderHighScoresPage();
 });

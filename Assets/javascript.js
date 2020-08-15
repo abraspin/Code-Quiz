@@ -55,6 +55,7 @@ $(document).ready(function () {
   $("#start-quiz-btn").on("click", function () {
     // display time remaining on the page
     timerDisplay.text(timeRemaining);
+
     //clear appropriate local storage, last game's high scorer and their score
     localStorage.setItem("newHighScore", "");
     localStorage.setItem("scoreThisround", timeRemaining);
@@ -89,12 +90,14 @@ $(document).ready(function () {
     }
 
     console.log("passed question array: " + questionArray);
+
     //Begin the timer each time a new question is posed, it will be passed the previous
     // timeRemaining value and --maybe an argument for whether or not the person answered correctly?
 
     //why does the timer take so long to start after showing the first question?
     var timeInterval = setInterval(function () {
       timerDisplay.text(timeRemaining);
+
       //gotta update the local storage on each tick of the timer
       localStorage.setItem("timeRemaining", timeRemaining);
       timeRemaining--;
@@ -107,6 +110,7 @@ $(document).ready(function () {
         clearInterval(timeInterval);
 
         gameOver();
+
         //NOT 100% SURE ON THIS RETURN CAUSE I ADDED IT TO THE IF STATEMENT AT THE START BUT THIS WORKED
         // OK BEFORE I CHANGED IT?
         return;
@@ -115,7 +119,6 @@ $(document).ready(function () {
 
     //empty the 3 rows of contents to prepare to fill them
     //with the question and answer choices
-
     $("#questionTopRow").empty();
     $("#questionMiddleRow").empty();
     $("#questionBottomRow").empty();
@@ -123,16 +126,17 @@ $(document).ready(function () {
     //I also need to change the class attribute so it
     // stops center-justifying everything
     // $("#questionTopRow").attr("class", "questionBlock")
-
     $("#questionTopRow").html("<h1>" + questionArray[1] + "</h1>");
+
     //starting this for loop at 2, because 0 contains the correct answer index, and 1 contains the question text.
     for (var i = 2; i < questionArray.length; i++) {
-      //if the index currently being made into a button matches the value in index 0 of the passed array(index 0
-      // contains the value of the index containing the correct answer text), then it
-      // will mark this button with the class "correct-answer"
       console.log("i: " + i);
       console.log(questionArray[0]);
       console.log("i to string: " + i.toString());
+
+      // if the index of the el;ement currently being made into a button matches the value in index 0 of the passed array(index 0
+      // contains the value of the index containing the correct answer text), then it
+      // will mark this button with the class "correct-answer", otherwise it gets class "incorrect answer"
       var answerOptionBtn;
       if (i.toString() === questionArray[0]) {
         answerOptionBtn = $(
@@ -148,11 +152,22 @@ $(document).ready(function () {
       $("#questionMiddleRow").append(answerOptionBtn);
       answerOptionBtn.text(i - 1 + ". " + questionArray[i]);
 
-      //i dont think this is how you modify styling through js
+      //i dont think this is how you modify styling through js but those buttons are MESSED UP
       // $("#main-content").attr("text-align" ,"center");
       // $("#questionTopRow").style["text-align"] = "right";
     }
 
+    if (localStorage.getItem("currentQuestion") != 0) {
+      if (localStorage.getItem("previousQuestionCorrect") === "true") {
+        $("#questionBottomRow").html("<h4 class= 'center' >Correct!</h4>");
+      }
+      else{
+        
+        $("#questionBottomRow").html("<h4 class= 'center' >Incorrect!</h4>");
+      }
+    }
+
+    //is it a mistake to put these inside this function? I'm thinking no...
     $(".correct-answer").on("click", function () {
       // console.log("i in the click loop: " + i);
       clearInterval(timeInterval);
@@ -197,7 +212,7 @@ $(document).ready(function () {
     );
   }
 
-  //I definitely need a way to validate whether the local storage variable key exists  before 
+  //I definitely need a way to validate whether the local storage variable key exists  before
   // looking for it to populate this list, if it exists and is populated, right?
   function renderHighScoresPage() {
     var scoresListEl = $("#high-score-box");
@@ -206,9 +221,9 @@ $(document).ready(function () {
     localStorage.setItem("scoreThisRound", 60);
 
     // highScoresArray = ["A.S -- 52", "A.b -- 67"];
-    console.log(localStorage.getItem("previousScoresListHTML"))
+    console.log(localStorage.getItem("previousScoresListHTML"));
     highScoresArray = JSON.parse(localStorage.getItem("previousScoresListHTML"));
-    console.log(highScoresArray)
+    console.log(highScoresArray);
     scoresListEl.append($("<ol id='scores-ordered-list'></ol>"));
 
     for (var i = 0; i < highScoresArray.length; i++) {
@@ -283,5 +298,5 @@ $(document).ready(function () {
     }
   });
 
-  renderHighScoresPage();
+  // renderHighScoresPage();
 });

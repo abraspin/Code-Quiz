@@ -157,13 +157,22 @@ $(document).ready(function () {
       // $("#questionTopRow").style["text-align"] = "right";
     }
 
+
+    //THERE IS A BUG HERE WHERE THE TIMER CARRIES OVER TO THE NEXT QUESTION IF THE ANSWER IS SELECTED BEFORE the timeout MS runs out
+    //double check to make sure we don't show any "right/wrong for last question" feedback if it's the first question
     if (localStorage.getItem("currentQuestion") != 0) {
       if (localStorage.getItem("previousQuestionCorrect") === "true") {
         $("#questionBottomRow").html("<h4 class= 'center' >Correct!</h4>");
-      }
-      else{
-        
+        //after 4 seconds, the right/wrong answer feedback will be removed.
+        setTimeout(function () {
+          $("#questionBottomRow h4").fadeOut();
+        }, 4000);
+      } else {
         $("#questionBottomRow").html("<h4 class= 'center' >Incorrect!</h4>");
+        //after 4 seconds, the right/wrong answer feedback will be removed.
+        setTimeout(function () {
+          $("#questionBottomRow h4").fadeOut();
+        }, 4000);
       }
     }
 

@@ -18,35 +18,35 @@ $(document).ready(function () {
   var questionTwoArray = [
     "5",
     "Arrays in JavaScript can be used to store _____.",
-    "1. numbers and strings",
-    "2. other arrays",
-    "3. booleans",
-    "4. all of the above",
+    "numbers and strings",
+    "other arrays",
+    "booleans",
+    "all of the above",
   ];
   var questionThreeArray = [
     "4",
     "The condition in an if / else statement is enclosed within _____.",
-    "1. quotes",
-    "2. curly brackets",
-    "3. parentheses",
-    "4. square brackets",
+    "quotes",
+    "curly brackets",
+    "parentheses",
+    "square brackets",
   ];
   var questionFourArray = [
     "4",
     "String values must be enclosed within _____ when being assiend to variables.",
-    "1. commas",
-    "2. curly brackets",
-    "3. quotes",
-    "4. parentheses",
+    "commas",
+    "curly brackets",
+    "quotes",
+    "parentheses",
   ];
 
   var questionFiveArray = [
     "5",
     "A very useful tool used during development and debugging for printing content to the debugger is:",
-    "1. JavaScript",
-    "2. terminal / bash",
-    "3. for loops",
-    "4. console.log",
+    "JavaScript",
+    "terminal / bash",
+    "for loops",
+    "console.log",
   ];
 
   var masterQuestionsArray = [questionOneArray, questionTwoArray, questionThreeArray, questionFourArray, questionFiveArray];
@@ -67,6 +67,7 @@ $(document).ready(function () {
     postNewQuestion(questionOneArray);
   });
 
+  //////////////////////////////////////////////POST NEW QUESTION FUNCTION////////////////////////////////////////////////
   function postNewQuestion(questionArray) {
     if (parseInt(localStorage.getItem("currentQuestion")) === masterQuestionsArray.length) {
       // console.log(
@@ -119,9 +120,7 @@ $(document).ready(function () {
 
     //empty the 3 rows of contents to prepare to fill them
     //with the question and answer choices
-    $("#questionTopRow").empty();
-    $("#questionMiddleRow").empty();
-    $("#questionBottomRow").empty();
+    $("#questionTopRow, #questionMiddleRow, #questionBottomRow").empty();
 
     //I also need to change the class attribute so it
     // stops center-justifying everything
@@ -134,21 +133,24 @@ $(document).ready(function () {
       console.log(questionArray[0]);
       console.log("i to string: " + i.toString());
 
-      // if the index of the el;ement currently being made into a button matches the value in index 0 of the passed array(index 0
+      // if the index of the element currently being made into a button matches the value in index 0 of the passed array(index 0
       // contains the value of the index containing the correct answer text), then it
       // will mark this button with the class "correct-answer", otherwise it gets class "incorrect answer"
       var answerOptionBtn;
+
       if (i.toString() === questionArray[0]) {
         answerOptionBtn = $(
-          " <button type='button' class='correct-answer row btn btn-primary answerChoiceButton float-left' id='start-quiz-btn'></button>  "
+          // these buttons used to have id='start-quiz-btn' but I think that was an incorrect vestige
+          " <button type='button' class='correct-answer  btn btn-primary answerChoiceButton float-left' ></button>  "
         );
         console.log("i printed the right answer button");
       } else {
         answerOptionBtn = $(
-          " <button type='button' class='incorrect-answer row btn btn-primary answerChoiceButton float-left' id='start-quiz-btn'></button>  "
+          " <button type='button' class='incorrect-answer  btn btn-primary answerChoiceButton float-left' ></button>  "
         );
         console.log("i printed a wrong answer button");
       }
+
       $("#questionMiddleRow").append(answerOptionBtn);
       answerOptionBtn.text(i - 1 + ". " + questionArray[i]);
 
@@ -157,22 +159,22 @@ $(document).ready(function () {
       // $("#questionTopRow").style["text-align"] = "right";
     }
 
-
+    //FIXME:
     //THERE IS A BUG HERE WHERE THE TIMER CARRIES OVER TO THE NEXT QUESTION IF THE ANSWER IS SELECTED BEFORE the timeout MS runs out
     //double check to make sure we don't show any "right/wrong for last question" feedback if it's the first question
     if (localStorage.getItem("currentQuestion") != 0) {
       if (localStorage.getItem("previousQuestionCorrect") === "true") {
-        $("#questionBottomRow").html("<h4 class= 'center' >Correct!</h4>");
+        $("#questionBottomRow").html("<h4 class= 'col md-12  answer-feedback' >Correct!</h4>");
         //after 4 seconds, the right/wrong answer feedback will be removed.
         setTimeout(function () {
           $("#questionBottomRow h4").fadeOut();
-        }, 4000);
+        }, 1500);
       } else {
-        $("#questionBottomRow").html("<h4 class= 'center' >Incorrect!</h4>");
+        $("#questionBottomRow").html("<h4 class= 'col md-12 answer-feedback' >Incorrect!</h4>");
         //after 4 seconds, the right/wrong answer feedback will be removed.
         setTimeout(function () {
           $("#questionBottomRow h4").fadeOut();
-        }, 4000);
+        }, 1500);
       }
     }
 
@@ -202,27 +204,28 @@ $(document).ready(function () {
       console.log("incorrect answer selected");
     });
   }
-
+  ///////////////////////////////////////////GAMEOVER FUNCTION/////////////////////////////////////////////////
   function gameOver() {
-    //are these actually necessary?
-    $("#questionTopRow").empty();
-    $("#questionMiddleRow").empty();
-    $("#questionBottomRow").empty();
+    //it this actually necessary?
+    $("#questionTopRow, #questionMiddleRow, #questionBottomRow").empty();
 
     $("#questionTopRow").html("<h1>All done!</h1>");
     $("#questionMiddleRow").append($("<p class = 'row'> Your final score is: " + timeRemaining + ".</p>"));
-    $("#questionMiddleRow").append($("<div class='col-md-4'> Enter Initials: </div>"));
 
-    $("#questionMiddleRow").append(
+    
+    $("#questionBottomRow").append($("<div class='col-md-4'> Enter Initials: </div>"));
+
+    $("#questionBottomRow").append(
       $("<input  type='text' class = 'col-md-4' placeholder='Your initials' name='high-initials-text' id='initials-text' />")
     );
-    $("#questionMiddleRow").append(
+    $("#questionBottomRow").append(
       $("<button   type='button' class='btn btn-primary col-md-4 ' id='submit-score-btn'>Submit</button>")
     );
+    $("#questionBottomRow").addClass("all-done-row ")
   }
-
-  //I definitely need a way to validate whether the local storage variable key exists  before
-  // looking for it to populate this list, if it exists and is populated, right?
+  ///////////////////////////////////////////RENDER HIGH SCORES FUNCTION/////////////////////////////////////////////////
+  //TODO: I definitely need a way to validate whether the local storage variable key exists  before
+  //FIXME: looking for it to populate this list, if it exists and is populated, right?
   function renderHighScoresPage() {
     var scoresListEl = $("#high-score-box");
     //test
@@ -239,6 +242,8 @@ $(document).ready(function () {
       $("#scores-ordered-list").append($("<li>" + highScoresArray[i] + "</li>"));
     }
 
+    
+//TODO: typo for local storage
     //end test
 
     // // this code is to try and figure out how to get either an existing list, or a new list, into an OL. b/c i can't
@@ -262,6 +267,7 @@ $(document).ready(function () {
     // $("#scores-ordered-list").append($("<li>" + "item1" + "</li>"));
 
     //prepend this person's high score to the list
+
     $("#scores-ordered-list").prepend(
       $("<li>" + localStorage.getItem("newHighScore") + " -- " + localStorage.getItem("scoreThisRound") + "</li>")
     );
@@ -277,6 +283,8 @@ $(document).ready(function () {
     localStorage.setItem("previousScoresListHTML", "");
   });
 
+  ///////////////////////////////////////////EVENT LISTENERS/////////////////////////////////////////////////
+
   //this event listener will grab the user's initials when they click the "submit button" after the game is over
   $(document).on("click", "#submit-score-btn", function (e) {
     //prevents the page refreshing between button click and grabbing the form data
@@ -288,22 +296,31 @@ $(document).ready(function () {
     console.log("submit score button was pressed!");
     console.log(newInitials);
     console.log("initials text is: " + newInitials);
+
     localStorage.setItem("newHighScore", newInitials);
     localStorage.setItem("scoreThisround", timeRemaining);
     // Return from function early if submitted todoText is blank
     if (newInitials === "") {
       alert("Please enter your initials for posterity!");
     } else {
+          //Changes-Tutoring session
+    var username = JSON.parse(localStorage.getItem("users"))|| []
+    var scores = JSON.parse(localStorage.getItem("userscore")) || []
+    // unshift puts the element in the top of the array
+    username.unshift(newInitials);
+    scores.unshift(timeRemaining);
+    localStorage.setItem("users",JSON.stringify(username))
+    localStorage.setItem("userscore",JSON.stringify(scores))
+    
       //navigate to high scores page and render the content
       document.location = "./high-scores.html";
-      /////////////////////////////////////////
-      //////i think this is problematic////////
-      /////////////////////////////////////////
+
       //wait for the page to load? I don't think so...
-      $(document).ready(function () {
+      //FIXME: why does it not render the scores when it arrives at the high scores page from the submit initials button click event?
+      // $(document).ready(function () {
         //it ONLY renders the local storage into HTML for the high scores list if you got there via this click event
-        renderHighScoresPage();
-      });
+        // renderHighScoresPage();
+      // });
     }
   });
 

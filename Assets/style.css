@@ -1,8 +1,8 @@
-#start-quiz-btn,
-h1,
+/* #start-quiz-btn, */
+/* h1,
 p{
     margin: 0 auto;
-}
+}  */
 .top-bar{
     margin: 0 auto;
 }
@@ -15,11 +15,20 @@ p{
 }
 /* does this do anything? */
 .answerChoiceButton{
-    margin: 5px;
+    margin-bottom: 10px;
+    width: 100%;
 }
 /* .questionBlock{
     text-align: left;
 } */
-.center{
-    margin-left: 45%;
+.answer-feedback{
+   width: 100%;
+   margin-left: 45%;
+} 
+#questionBottomRow{
+    width: 100%
+    
+}
+.all-done-row{
+    width: 50%
 }

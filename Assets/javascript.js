@@ -1,22 +1,27 @@
 //is it inapropritate to wrap the ENTIRE JS  file in a document.ready function?
 $(document).ready(function () {
-  //i can use the 3 rows i already made for the "main-content" and replace with the question h1, answer button options, and "correct!"/"wrong!"
+  // Variable  declarations
+  var initialsText = $("#initials-text");
+  var timeRemaining = 75;
+  //HTML span that contains the on-screen timeRemaining text
+  var timerDisplay = $("#time-remaining");
 
-  // one array with the questions, and then a corresponding array of answers? is there a better premade data objectfor this?
-  //ACTUALLY illtry one array per quesiton, index 0 has the question, 1-4 have the answer options. array.length=5
+  //local storage initializations - time remaining resets to the above value, current question resets to 0
+  localStorage.setItem("timeRemaining", timeRemaining);
+  localStorage.setItem("currentQuestion", 0);
+  //this contains the
 
-  //if i was super duper fancy the answer options would just be the words and the function adds the 1., 2. etc
-
-  //I SHOULD ABSOLUTELY USE OBJECTS
-
-  var questionObj = {
-    questionText: "",
-    answerOne: "",
-    answerTwo: "",
-    answerThree: "",
-    answerFour: "",
-  };
+  // console.log(masterQuestionsArray);
+  //arrays containing the code questions, answer choices, and correct answer index.
   // The 0th element in each array is going to contain as its value, the index of that array which contains the correct answer.
+
+  // var questionObj = {
+  //   questionText: "",
+  //   answerOne: "",
+  //   answerTwo: "",
+  //   answerThree: "",
+  //   answerFour: "",
+  // };
 
   var questionOneArray = [
     "4",
@@ -67,36 +72,32 @@ $(document).ready(function () {
     questionFourArray,
     questionFiveArray,
   ];
-  // console.log("master questions array length: " + masterQuestionsArray.length);
-  //time remaining and score
-  var timeRemaining = 75;
-  // console.log(masterQuestionsArray);
 
-  //HTML span that contains the on-screen timeRemaining text
-  var timerDisplay = $("#time-remaining");
   timerDisplay.text(timeRemaining);
-
   //
-  localStorage.setItem("timeRemaining", timeRemaining);
 
-  var currentQuestion = parseInt(localStorage.getItem("currentQuestion"));
-
-  localStorage.setItem("currentQuestion", 0);
   // console.log("I SET THE LOCAL STORAGE VALUE FOR CURRENT QUESITON TO 0!!");
   // localStorage.setItem("previousQuestionCorrect");
 
   ///////////////////////////////////////////   functions //////////////////////////////////////////////////
   $("#start-quiz-btn").on("click", function () {
-    //start the quiz
-    postNewQuestion(questionOneArray);
+    //clear appropriate local storage, last game's high scorer and their score
+    localStorage.setItem("newHighScore", "");
+    localStorage.setItem("scoreThisround", timeRemaining);
+
     //setting current question to the index of the first question in the master questions array.
     localStorage.setItem("currentQuestion", "0");
+
+    //start the quiz
+    postNewQuestion(questionOneArray);
   });
 
   //should I add an index passed as an argument for this function
   // that tells it which one is the correct answer?
 
   function postNewQuestion(questionArray) {
+    // var questionArrayCheck = questionArray;
+
     if (
       parseInt(localStorage.getItem("currentQuestion")) ===
       masterQuestionsArray.length
@@ -108,12 +109,16 @@ $(document).ready(function () {
       gameOver();
       return;
     }
-    if (currentQuestion != 0) {
+
+    //convert the local storage value for "what question we're on" to an int
+    var currentQuestionInt = parseInt(localStorage.getItem("currentQuestion"));
+
+    //this is the code block to render whether or not the user answered the previous question correctly.
+    // if it's the first question (currentQuestionInt === 0) then display nothing there.
+    if (currentQuestionInt != 0) {
       if (localStorage.getItem("previousQuestionCorrect")) {
         $("#questionMiddleRow").html("correct");
       } else {
-        // Wro;
-        // WHAT HIS GOING ON HERE
       }
     }
 
@@ -128,6 +133,9 @@ $(document).ready(function () {
       localStorage.setItem("timeRemaining", timeRemaining);
       timeRemaining--;
 
+      // if you run out of time game over
+      // if you run out of quesitons - game over -- this function will be passed undef or null or something if we go beyond
+      // the range of available questions in the master question array.
       if (timeRemaining <= 0) {
         timerDisplay.text(timeRemaining);
         clearInterval(timeInterval);
@@ -145,8 +153,6 @@ $(document).ready(function () {
     $("#questionTopRow").empty();
     $("#questionMiddleRow").empty();
     $("#questionBottomRow").empty();
-
-    // $("#questionMiddleRow").append("<div>");
 
     //I also need to change the class attribute so it
     // stops center-justifying everything
@@ -179,25 +185,17 @@ $(document).ready(function () {
       //i dont think this is how you modify styling through js
       // $("#main-content").attr("text-align" ,"center");
       // $("#questionTopRow").style["text-align"] = "right";
-
-      //peudo code
-      // if buttonPressed.text === (i + '. ' + questionArray[correctAnswerIndex]){
-      //
-      // }
     }
 
-    //this used to be inside each click event. now its up top
-    // var currentQuestion = parseInt(localStorage.getItem("currentQuestion"))
-    // console.log("i in the loop but outside clicks: " +i);
     $(".correct-answer").on("click", function () {
       // console.log("i in the click loop: " + i);
       clearInterval(timeInterval);
-      console.log(currentQuestion);
-      currentQuestion++;
-      console.log(currentQuestion);
-      localStorage.setItem("currentQuestion", currentQuestion);
+      console.log(currentQuestionInt);
+      currentQuestionInt++;
+      console.log(currentQuestionInt);
+      localStorage.setItem("currentQuestion", currentQuestionInt);
       localStorage.setItem("previousQuestionCorrect", true);
-      postNewQuestion(masterQuestionsArray[currentQuestion]);
+      postNewQuestion(masterQuestionsArray[currentQuestionInt]);
       console.log("correct answer selected");
     });
 
@@ -207,10 +205,10 @@ $(document).ready(function () {
       localStorage.setItem("timeRemaining", timeRemaining);
       clearInterval(timeInterval);
       console.log("i in the click loop: " + i);
-      currentQuestion++;
-      localStorage.setItem("currentQuestion", currentQuestion);
+      currentQuestionInt++;
+      localStorage.setItem("currentQuestion", currentQuestionInt);
       localStorage.setItem("previousQuestionCorrect", false);
-      postNewQuestion(masterQuestionsArray[currentQuestion]);
+      postNewQuestion(masterQuestionsArray[currentQuestionInt]);
       console.log("incorrect answer selected");
     });
   }
@@ -243,43 +241,80 @@ $(document).ready(function () {
     );
   }
 
+  function renderHighScoresPage() {
+    // test -
+
+    // localStorage.setItem("newHighScore", "A.S");
+
+    //end test///
+
+    // first we take the existing list from local storage and parse it into an array
+
+    var scoresListEl = $("#high-score-box");
+    // if statement checking for if the high scores have been cleared? no its always empty dummy
+    scoresListEl.empty();
+    scoresListEl.append($("<ol id='scores-ordered-list'> </ol>"));
+    // $("#scores-ordered-list").append($("<li>" + "item1" + "</li>"));
+
+    //prepend this person's high score to the list
+    $("#scores-ordered-list").prepend(
+      $(
+        "<li>" +
+          localStorage.getItem("newHighScore") +
+          " -- " +
+          localStorage.getItem("timeRemaining") +
+          "</li>"
+      )
+    );
+
+    if (!localStorage.getItem("previousScoresListHTML")) {
+      scoresListEl.append(localStorage.getItem("previousScoresListHTML"));
+      console.log("i thought it was empty");
+    }
+
+    localStorage.setItem(
+      "previousScoresListHTML",
+      $("#high-score-box").innerText
+    );
+    // console.log($("#scoresListID").html());
+    var innerTextTest = $("#high-score-box");
+    var test2 = innerTextTest.innerText;
+    console.log(test2);
+  }
+
+  renderHighScoresPage();
+
   //ON THE HIGH SCORES PAGE when the user clicks "clear high scores button"
   //it will empty the div containing the list of high scores. A new OL must therefore be made when repopulating.
   $("#clear-highscores-btn").click(function () {
     $("#high-score-box").empty();
+    localStorage.setItem("previousScoresListHTML", "");
   });
-  //the above SHOULD do the below
-  // var clearButton = $("#clear-highscores-btn");
-  //   clearButton.click( function (){$('#high-score-box').empty();
-
-  //use something like  init() function in activity 28 in web apis to pull old high scores onto page
 
   // postNewQuestion(questionOneArray, 3);
-  gameOver();
+  // gameOver();
+
+  //this event listener will grab the user's initials when they click the "submit button" after the game is over
 
   $(document).on("click", "#submit-score-btn", function (e) {
-    // var initialsText = $("#initials-text");
-
     //prevents the page refreshing between button click and grabbing the form data
     e.preventDefault();
 
-    var initialsText = $("#initials-text").val();
+    // var newInitials = initialsText.val();  why this doens't work, but the below does? else returns undef
+    // DUH BECAUSE THAT ELEMENT DIDN'T EXIST YET DUM DUM I MADE IT DYNAMICALLY
+    var newInitials = $("#initials-text").val();
     console.log("submit score button was pressed!");
-
-    console.log(initialsText);
-    console.log("initials text is: " + initialsText);
-
-    // var newInitials = initialsText.value;
-    // console.log( JSON.parse(initialsText))
-    // var newInitials = initialsText.value;
-    // console.log(newInitials);
-    // console.log("the initials form input text is: " + newInitials);
-
-    // // Return from function early if submitted todoText is blank
-    // if (newInitials === "") {
-    //   return;
-    // }
-
+    console.log(newInitials);
+    console.log("initials text is: " + newInitials);
+    localStorage.setItem("newHighScore", newInitials);
+    localStorage.setItem("scoreThisround", timeRemaining);
+    // Return from function early if submitted todoText is blank
+    if (newInitials === "") {
+      alert("Please enter your initials for posterity!");
+    } else {
+      document.location = "./high-scores.html";
+      //function here to clear existing list and render new one
+    }
     //  ///////////// // Add new todoText to todos array, clear the input
     //   todos.push(todoText);
     //   todoInput.value = "";

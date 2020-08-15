@@ -209,11 +209,11 @@ $(document).ready(function () {
     //it this actually necessary?
     $("#questionTopRow, #questionMiddleRow, #questionBottomRow").empty();
 
-    $("#questionTopRow").html("<h1>All done!</h1>");
-    $("#questionMiddleRow").append($("<p class = 'row'> Your final score is: " + timeRemaining + ".</p>"));
+    $("#questionTopRow").html("<h1 class='col-md-12'>All done!</h1>");
+    $("#questionMiddleRow").append($("<p class = 'mx-auto'> Your final score is: " + timeRemaining + "!</p>"));
 
-    
-    $("#questionBottomRow").append($("<div class='col-md-4'> Enter Initials: </div>"));
+
+    $("#questionBottomRow").append($("<div class='col-md-4 float-right my-auto'> Enter Initials: </div>"));
 
     $("#questionBottomRow").append(
       $("<input  type='text' class = 'col-md-4' placeholder='Your initials' name='high-initials-text' id='initials-text' />")
@@ -221,7 +221,7 @@ $(document).ready(function () {
     $("#questionBottomRow").append(
       $("<button   type='button' class='btn btn-primary col-md-4 ' id='submit-score-btn'>Submit</button>")
     );
-    $("#questionBottomRow").addClass("all-done-row ")
+    $("#questionBottomRow").addClass("all-done-row mx-auto ")
   }
   ///////////////////////////////////////////RENDER HIGH SCORES FUNCTION/////////////////////////////////////////////////
   //TODO: I definitely need a way to validate whether the local storage variable key exists  before

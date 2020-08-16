@@ -13,7 +13,7 @@ UTA Bootcamp Homework-04 Web APIs: Code Quiz
 
 ---
 
-The assignment was to build a timed code quiz with multiple-choice questions. The app runs in the browser and features dynamically updated HTML and CSS powered by JavaScript code and the JQuery library. It also features a clean and polished user interface and is responsive to multiple screen sizes. A running high scores list persists on local storage.
+The assignment was to build a timed code quiz with multiple-choice questions. The app runs in the browser and features dynamically updated HTML and CSS powered by JavaScript code and the JQuery library. It also features a clean and polished user interface and is responsive to multiple screen sizes. A running high scores list persists in local storage.
 
 ---
 
@@ -21,8 +21,8 @@ The assignment was to build a timed code quiz with multiple-choice questions. Th
 **Files include:**
 * Index page
 * High Scores page 
-* Index Javascript file
-* High Scores JavsSript File
+* Index JavaScript file
+* High Scores JavaScript File
 * Style Sheet containing CSS code
 * This README file
 
@@ -34,8 +34,8 @@ Author: Abraham Spindel
 ---
 
 ## Credits
-JQuery Library
-Bootstrap Framework
+JQuery Library,
+Bootstrap Framework,
 Font Awesome Library
 
 ---

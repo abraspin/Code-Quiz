@@ -32,3 +32,8 @@ p{
 .all-done-row{
     width: 50%
 }
+#clear-highscores-btn,
+#go-back-to-quiz-btn{
+
+     margin-top: 10px;
+}

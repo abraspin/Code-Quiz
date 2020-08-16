@@ -33,7 +33,7 @@ $(document).ready(function () {
   ];
   var questionFourArray = [
     "4",
-    "String values must be enclosed within _____ when being assiend to variables.",
+    "String values must be enclosed within _____ when being assigned to variables.",
     "commas",
     "curly brackets",
     "quotes",
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
   var questionFiveArray = [
     "5",
-    "A very useful tool used during development and debugging for printing content to the debugger is:",
+    "This useful tool is used for printing content to the debugger during development and debugging:",
     "JavaScript",
     "terminal / bash",
     "for loops",
@@ -126,7 +126,7 @@ $(document).ready(function () {
     // stops center-justifying everything
     // $("#questionTopRow").attr("class", "questionBlock")
     $("#questionTopRow").html("<h1>" + questionArray[1] + "</h1>");
-
+    $("#questionTopRow").addClass("text-left")
     //starting this for loop at 2, because 0 contains the correct answer index, and 1 contains the question text.
     for (var i = 2; i < questionArray.length; i++) {
       console.log("i: " + i);
@@ -210,6 +210,7 @@ $(document).ready(function () {
     $("#questionTopRow, #questionMiddleRow, #questionBottomRow").empty();
 
     $("#questionTopRow").html("<h1 class='col-md-12'>All done!</h1>");
+    $("#questionTopRow").addClass("text-center")
     $("#questionMiddleRow").append($("<p class = 'mx-auto'> Your final score is: " + timeRemaining + "!</p>"));
 
 
